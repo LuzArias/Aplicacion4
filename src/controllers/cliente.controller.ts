@@ -17,6 +17,7 @@ import {Cliente, Credenciales} from '../models';
 import {ClienteRepository} from '../repositories';
 import {AutenticacionService} from '../services';
 
+
 export class ClienteController {
   constructor(
     @repository(ClienteRepository)
@@ -25,7 +26,7 @@ export class ClienteController {
     public servicioautenticacion: AutenticacionService
   ) { }
 
-  @post('/clientes', {
+  @post('/IdentificarCliente', {
     responses: {
       "200":
       {
@@ -33,17 +34,17 @@ export class ClienteController {
       }
     }
   })
-  async identificar(
+  async IdentificarClie(
     @requestBody() credenciales: Credenciales
   ) {
-    let p = await this.servicioautenticacion.IdentificarClie(credenciales.usuario, credenciales.clave);
-    if (p) {
-      let token = this.servicioautenticacion.GenerarTokenJWT(p);
+    let c = await this.servicioautenticacion.IdentificarClie(credenciales.usuario, credenciales.clave);
+    if (c) {
+      let token = this.servicioautenticacion.GenerarTokenJWT(c);
       return {
         datos: {
-          nombre: p.nombre,
-          correo: p.correo,
-          id: p.id
+          nombre: c.nombre,
+          correo: c.correo,
+          id: c.id
         },
         tk: token
       }

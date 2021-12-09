@@ -6,7 +6,6 @@ import {ClienteRepository} from '../repositories';
 const jwt = require("jsonwebtoken");
 const generador = require("password-generator");
 const cryptojs = require("crypto-js");
-@injectable({scope: BindingScope.TRANSIENT})
 export class AutenticacionService {
   constructor(
     @repository(ClienteRepository)
@@ -28,8 +27,8 @@ export class AutenticacionService {
   }
   IdentificarClie(usuario: string, clave: string) {
     try {
-      let a = this.clienteRepository.findOne({where: {correo: usuario, clave: clave}});
-      return a;
+      let c = this.clienteRepository.findOne({where: {correo: usuario, clave: clave}});
+      return c;
 
     } catch {
       return false;
@@ -40,9 +39,9 @@ export class AutenticacionService {
     let token = jwt.sing({
       data: {
         id: cliente.id,
-        correo: cliente.correo, nombres: cliente + " " + cliente.apellido
+        correo: cliente.correo, nombre: cliente + " " + cliente.apellido
       }
-    })
+    }, llaves.claveJWT)
     return token;
   }
   ValidarTokenJWT(token: string) {
